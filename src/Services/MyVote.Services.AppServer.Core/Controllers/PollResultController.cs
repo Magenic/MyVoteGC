@@ -5,6 +5,7 @@ using MyVote.Services.AppServer.Models;
 using MyVote.BusinessObjects;
 using MyVote.BusinessObjects.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyVote.Services.AppServer.Controllers
 {
