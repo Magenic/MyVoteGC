@@ -1,0 +1,25 @@
+﻿{
+  "authors": [ "Nate Barbettini" ],
+  "dependencies": {
+    "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
+    "Microsoft.Extensions.Options": "1.0.0",
+    "Microsoft.Extensions.Logging": "1.0.0",
+    "Microsoft.Extensions.Configuration.Json": "1.0.0",
+    "NETStandard.Library": "1.6.0",
+    "Microsoft.IdentityModel.Tokens": "5.0.0",
+    "System.IdentityModel.Tokens.Jwt": "5.0.0"
+  },
+  "description": "Simple authentication token provider for ASP.NET Core.",
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  },
+  "packOptions": {
+    "tags": [ "token", "authentication", "security", "jwt" ]
+  },
+  "tooling": {
+    "defaultNamespace": "TokenProviderMiddleware"
+  },
+  "version": "1.0.0-*"
+}
