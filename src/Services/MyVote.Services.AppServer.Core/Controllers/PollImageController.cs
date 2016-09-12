@@ -22,12 +22,14 @@ namespace MyVote.Services.AppServer.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Post(IFormFile file)
+        public async Task<IActionResult> Post()
         {
-            var uploadStream = new MemoryStream(new BinaryReader(file.OpenReadStream()).ReadBytes((int)file.Length));
-            await StorageClient.Create().UploadObjectAsync(iconfig.Value.Name, file.FileName, file.ContentType, uploadStream);
+            var imageFile = Request.Form.Files;
 
-            return new OkObjectResult(new { imageUrl = "https://storage.googleapis.com/" + iconfig.Value.Name + "/" + file.FileName });
+            var uploadStream = new MemoryStream(new BinaryReader(imageFile[0].OpenReadStream()).ReadBytes((int)imageFile[0].Length));
+            await StorageClient.Create().UploadObjectAsync(iconfig.Value.Name, imageFile[0].FileName, imageFile[0].ContentType, uploadStream);
+
+            return new OkObjectResult(new { imageUrl = "https://storage.googleapis.com/" + iconfig.Value.Name + "/" + imageFile[0].FileName });
         }
 
     }
