@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Google.Storage.V1;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 
 namespace MyVote.Services.AppServer.Controllers
 {
@@ -12,23 +13,21 @@ namespace MyVote.Services.AppServer.Controllers
     public sealed class PollImageController
         : Controller
     {
-        const string bucketName = "";
+        private IOptions<BucketStorageName> iconfig { get; set; }
+
+        public PollImageController(IOptions<BucketStorageName> configuration)
+        {
+            iconfig = configuration;
+        }
 
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Post(IFormFile file)
         {
-            string filename = file.FileName;
-            string contentType = file.ContentType;
+            var uploadStream = new MemoryStream(new BinaryReader(file.OpenReadStream()).ReadBytes((int)file.Length));
+            await StorageClient.Create().UploadObjectAsync(iconfig.Value.Name, file.FileName, file.ContentType, uploadStream);
 
-            BinaryReader reader = new BinaryReader(file.OpenReadStream());
-            byte[] imageBytes = reader.ReadBytes((int)file.Length);
-            var uploadStream = new MemoryStream(imageBytes);
-
-            var client = StorageClient.Create();
-            var uploaded = client.UploadObjectAsync(bucketName, filename, contentType, uploadStream);
-
-            return new OkObjectResult(new { imageUrl = "https://storage.googleapis.com/" + bucketName + "/" + filename });
+            return new OkObjectResult(new { imageUrl = "https://storage.googleapis.com/" + iconfig.Value.Name + "/" + file.FileName });
         }
 
     }

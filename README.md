@@ -6,11 +6,7 @@ The code in this repo has been scrubbed to remove sensitive key values for encry
 
 src/Services/MyVote.Services.AppServer.Core/appsettins.json
 
-add in database connection string
-
-src/Services/MyVote.Services.AppServer.Core/Startup.cs
-
-add in oauth provider id and secret
+add in database connection string and google cloud storage bucket name
 
 src/Services/MyVote.Services.AppServer.Core/Constants.cs
 

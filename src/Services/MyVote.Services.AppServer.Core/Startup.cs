@@ -35,9 +35,11 @@ namespace MyVote.Services.AppServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.Configure<BucketStorageName>(Configuration.GetSection("BucketStorageName"));
+
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration["ConnectionStrings:Entities"]));
-
+             
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Cookies.ApplicationCookie.AuthenticationScheme = "ApplicationCookie";
@@ -80,29 +82,6 @@ namespace MyVote.Services.AppServer
             loggerFactory.AddDebug();
 
             ConfigureAuth(app);
-
-            app.UseIdentity()
-               .UseFacebookAuthentication(new FacebookOptions
-               {
-                   AppId = "KEY",
-                   AppSecret = "KEY"
-               })
-                .UseGoogleAuthentication(new GoogleOptions
-                {
-                    ClientId = "KEY",
-                    ClientSecret = "KEY"
-                })
-                .UseTwitterAuthentication(new TwitterOptions
-                {
-                    ConsumerKey = "KEY",
-                    ConsumerSecret = "KEY"
-                }).UseMicrosoftAccountAuthentication(new MicrosoftAccountOptions
-                {
-                    DisplayName = "MicrosoftAccount",
-                    ClientId = "KEY",
-                    ClientSecret = "KEY",
-                    SaveTokens = true
-                });
 
             app.UseCors(Constants.CorsPolicyName);
             app.UseMvc(routes =>
